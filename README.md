@@ -14,7 +14,8 @@ The web consists of 4 layers (should be considered bottom-up):
 ## The Link Layer
 
 ## The Internet Layer
-
+- Cold War origins (ARPANET)
+- Global distributed network
 - Analogy: international mail
 
 ## The Transport Layer
