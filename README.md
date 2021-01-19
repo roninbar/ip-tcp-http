@@ -3,9 +3,9 @@
 # Introduction
 
 -   Cold War origins (ARPANET)
--   Global distributed network
--   The Internet is made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building.
--   The LANs are connected by the _Internet backbone_.
+-   Global decentralized network
+-   The Internet is made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, as well as some **W**ide **A**rea **N**etworks.
+-   The LANs and WANs are connected by the _Internet backbone_.
 
 ## Overview
 
@@ -24,25 +24,46 @@ The internet consists of 4 layers (should be considered bottom-up):
 -   LANs usually use _Ethernet_ cables and/or _WiFi_ to connect end devices to a central router.
 -   End devices have a 48-bit _physical, or MAC, address_.
 -   To send a message from one computer to another on the same LAN, the sender must know the recipient's physical address.
--   Mail analogy: to send a letter to someone, you need to
-    -   put the letter in an envelope.
-    -   write the recipient's address on one side of the envelope.
-    -   write the sender's address (yours) on the other side.
-    -   close the envelope and put it in the local mailbox.
-    -   The mail service takes care of delivering your letter to the recipient.
+-   Pneumatic tube analogy: to send medicine or a specimen (the "payload") to someone else in the hospital, you need to
+    1.  Put the payload in a capsule.
+        1.  Write the recipient's name on one side of the capsule.
+        1.  Write the sender's name (yours) on the other side.
+    1.  Put the capsule in your end of the pneumatic tube and send it to the sorting room.
+    1.  A worker in the sorting room receives the capsule, reads who is supposed to receive it, puts it in the proper tube and sends it to that person's room.
+    1.  The recipient opens the capsule and takes the payload.
 -   Similarly, to send digital information to another computer on the same LAN, you need to
-    -   Construct a _data frame_, made up of
-        1. The _frame header_, containing the physical addresses of the sender and the recipient.
-        2. The actual data, or _payload_
-        3. The _frame footer_
-    -   Transmit the frame over the physical medium (wire or radio frequency) connecting your device to the router.
-    -   The router repeats the frame over the medium that connects it to the recipient.
-    -   The other computer extracts the payload from the frame and interprets it somehow.
+    1.  Construct a _data frame_, made up of
+        1.  The _frame header_, containing the physical addresses of the sender and the recipient.
+        1.  The actual data, or _payload_
+        1.  The _frame footer_
+    1.  Transmit the frame over the physical medium (wire or radio frequency) connecting your device to the router.
+    1.  The router repeats the frame over the medium that connects it to the recipient.
+    1.  The other computer extracts the payload from the frame and interprets it somehow.
 
 ## The Internet Layer
 
--   Allows communications between any two computers on the Internet.
--   Analogy: international mail
+-   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols.
+-   Allows communications between _any two_ computers on the Internet, not just those that are directly connected to each other.
+-   Uses other computers on the Internet as _gateways_ (i.e. relays) between different networks.
+-   IP software is built into the operating systems of the end computers and of the gateways.
+-   To send a message from a computer in Tel Aviv to a computer in Honolulu, computers on the Internet cooperatively plan a _route_.
+-   Route: a series of "legs" or "hops" connected by gateways.
+-   To send a letter to someone in Honolulu,
+    1. Put the letter in an "international" envelope.
+        1. Write the recipient's address on one side of the envelope.
+        1. Write the sender's address (yours) on the other side.
+    1. Put the international envelope in a special "international" mailbox.
+    1. The international mail service plans a route to the recipient through a series of intermediate stops, for example,
+        1. Tel Aviv
+        1. Rome
+        1. Paris
+        1. New York
+        1. San Francisco
+        1. Honolulu
+    1. Then they take your envelope and put it in _another_ envelope.
+        1. On one side of this envelope they write "Rome".
+        1. On the other side they write "Tel Aviv".
+    1. They put the envelope in a special
 
 ## The Transport Layer
 
