@@ -40,6 +40,8 @@ The internet consists of 4 layers (should be considered bottom-up):
     1.  The router repeats the frame over the medium that connects it to the recipient.
     1.  The other computer extracts the payload from the frame and interprets it somehow.
 
+![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
+
 ## The Internet Layer
 
 -   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols.
@@ -87,4 +89,3 @@ The internet consists of 4 layers (should be considered bottom-up):
     -   Out-of-order packets
     -   Packet size limit
 
-![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
