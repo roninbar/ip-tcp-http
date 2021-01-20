@@ -65,6 +65,8 @@ The internet consists of 4 layers (should be considered bottom-up):
         1. On the other side they write "Tel Aviv".
     1. They put the envelope in a special
 
+![en:User:Cburnett original work, colorization by en:User:Kbrose, CC BY-SA 3.0 &lt;http://creativecommons.org/licenses/by-sa/3.0/&gt;, via Wikimedia Commons](/images/IP_stack_connections.svg)
+
 ## The Transport Layer
 
 ### 1st Case Study: Online Chess
@@ -84,3 +86,5 @@ The internet consists of 4 layers (should be considered bottom-up):
     -   Lost packets, retransmission
     -   Out-of-order packets
     -   Packet size limit
+
+![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
