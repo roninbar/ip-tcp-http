@@ -7,6 +7,8 @@
 -   The Internet is made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, as well as some **W**ide **A**rea **N**etworks.
 -   The LANs and WANs are connected by the _Internet backbone_.
 
+![Submarine Cable Map](/images/submarinecablemap.png)
+
 ## Overview
 
 The internet consists of 4 layers (should be considered bottom-up):
