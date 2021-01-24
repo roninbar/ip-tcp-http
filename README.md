@@ -1,17 +1,16 @@
-# How Does the Web Work?
+# How Does the Internet Work?
 
 # Introduction
 
 -   Cold War origins (ARPANET)
 -   Global decentralized network
--   The Internet is made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, as well as some **W**ide **A**rea **N**etworks.
--   The LANs and WANs are connected by the _Internet backbone_.
+-   The Internet is made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, and **W**ide **A**rea **N**etworks.
 
 ![Submarine Cable Map](/images/submarinecablemap.png)
 
 ## Overview
 
-The internet consists of 4 layers (should be considered bottom-up):
+The internet consists of 4 layers which are numbered from the bottom up:
 
 | Layer # | Layer Name  | Protocols                                                                                                        | Related Concepts                                                                                                         |
 | ------- | ----------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -22,22 +21,25 @@ The internet consists of 4 layers (should be considered bottom-up):
 
 ## The Link Layer
 
--   Allows direct communication between computers that are connected by a _physical medium_ (wire, radio frequency, optical cable...)
+-   Allows direct communication between computers that are connected by a _physical medium_ (wire, radio frequency, optical cable...) to each other or to a common router.
 -   LANs usually use _Ethernet_ cables and/or _WiFi_ to connect end devices to a central router.
 -   End devices have a 48-bit _physical, or MAC, address_.
 -   To send a message from one computer to another on the same LAN, the sender must know the recipient's physical address.
--   Pneumatic tube analogy: to send medicine or a specimen (the "payload") to someone else in the hospital, you need to
-    1.  Put the payload in a capsule.
+
+![Pneumatic Capsule](/images/Pneumatic-Tube-New-York-City-Postal-Service-Mail.jpg)
+
+-   Pneumatic tube analogy: to send a package, you need to
+    1.  Put the package in a capsule.
         1.  Write the recipient's name on one side of the capsule.
         1.  Write the sender's name (yours) on the other side.
     1.  Put the capsule in your end of the pneumatic tube and send it to the sorting room.
     1.  A worker in the sorting room receives the capsule, reads who is supposed to receive it, puts it in the proper tube and sends it to that person's room.
-    1.  The recipient opens the capsule and takes the payload.
+    1.  The recipient opens the capsule and takes the package.
 -   Similarly, to send digital information to another computer on the same LAN, you need to
-    1.  Construct a _data frame_, made up of
+    1.  Construct a _frame_, made up of
         1.  The _frame header_, containing the physical addresses of the sender and the recipient.
-        1.  The actual data, or _payload_
-        1.  The _frame footer_
+        1.  The actual data, or _payload_.
+        1.  The _frame footer_.
     1.  Transmit the frame over the physical medium (wire or radio frequency) connecting your device to the router.
     1.  The router repeats the frame over the medium that connects it to the recipient.
     1.  The other computer extracts the payload from the frame and interprets it somehow.
@@ -46,48 +48,26 @@ The internet consists of 4 layers (should be considered bottom-up):
 
 ## The Internet Layer
 
--   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols.
 -   Allows communications between _any two_ computers on the Internet, not just those that are directly connected to each other.
--   Uses other computers on the Internet as _gateways_ (i.e. relays) between different networks.
--   IP software is built into the operating systems of the end computers and of the gateways.
--   To send a message from a computer in Tel Aviv to a computer in Honolulu, computers on the Internet cooperatively plan a _route_.
--   Route: a series of "legs" or "hops" connected by gateways.
--   To send a letter to someone in Honolulu,
-    1. Put the letter in an "international" envelope.
-        1. Write the recipient's address on one side of the envelope.
-        1. Write the sender's address (yours) on the other side.
-    1. Put the international envelope in a special "international" mailbox.
-    1. The international mail service plans a route to the recipient through a series of intermediate stops, for example,
-        1. Tel Aviv
-        1. Rome
-        1. Paris
-        1. New York
-        1. San Francisco
-        1. Honolulu
-    1. Then they take your envelope and put it in _another_ envelope.
-        1. On one side of this envelope they write "Rome".
-        1. On the other side they write "Tel Aviv".
-    1. They put the envelope in a special
+-   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols (e.g. ICMP).
+-   Uses other computers on the Internet as _routers_, or _gateways_ (i.e. relays) between different networks.
+-   IP software is built into the operating systems of the end computers and of each intermediate router.
 
-![en:User:Cburnett original work, colorization by en:User:Kbrose, CC BY-SA 3.0 &lt;http://creativecommons.org/licenses/by-sa/3.0/&gt;, via Wikimedia Commons](/images/IP_stack_connections.svg)
+![en:User:Cburnett original work, colorization by en:User:Kbrose, CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>, via Wikimedia Commons](/images/IP_stack_connections.svg)
+
+-   To send a message to another computer on the Internet,
+    1. Construct a _packet_, made up of
+        1. The _IP header_, containing the IP addresses of the sender and recipient.
+        1. The actual data, or payload.
+    1. The IP software in your OS sees that the destination address is outside the local network, so
+    1. It sends the packet, using the link layer, to the local network's gateway (e.g. your DSL router).
+    1. Your DSL router sends the packet to your ISP's server.
+    1. The server uses a _routing table_ to decide which neighboring router is closest to the packet's intended destination.
+    1. It uses the link layer to send it to that router (the next _hop_).
+    1. Each hop brings the packet closer to its destination.
 
 ## The Transport Layer
 
-### 1st Case Study: Online Chess
+### Case Study: FTP
 
--   Each player has an application that shows the current state of the board.
--   Each move can be described using some formal notation and sent to the opponent using IP.
--   Missing features:
-    -   Finding an opponent
-    -   Sharing the computer with other applications
-    -   Lost packets, retransmission
-
-### 2nd Case Study: Chat
-
--   Missing features:
-    -   Finding your contacts
-    -   Sharing the computer with other applications
-    -   Lost packets, retransmission
-    -   Out-of-order packets
-    -   Packet size limit
-
+#### FTP Demonstration
