@@ -35,12 +35,12 @@ The internet consists of 4 layers which are numbered from the bottom up:
     1.  Put the capsule in your end of the pneumatic tube and send it to the sorting room.
     1.  A worker in the sorting room receives the capsule, reads who is supposed to receive it, puts it in the proper tube and sends it to that person's room.
     1.  The recipient opens the capsule and takes the package.
--   Similarly, to send digital information to another computer on the same LAN, you need to
-    1.  Construct a _frame_, made up of
+-   Similarly, to send digital information to another computer on the same LAN, the link layer
+    1.  Constructs a _frame_, made up of
         1.  The _frame header_, containing the physical addresses of the sender and the recipient.
         1.  The actual data, or _payload_.
         1.  The _frame footer_.
-    1.  Transmit the frame over the physical medium (wire or radio frequency) connecting your device to the router.
+    1.  Transmits the frame over the physical medium (wire or radio frequency) connecting your device to the router.
     1.  The router repeats the frame over the medium that connects it to the recipient.
     1.  The other computer extracts the payload from the frame and interprets it somehow.
 
@@ -55,12 +55,12 @@ The internet consists of 4 layers which are numbered from the bottom up:
 
 ![en:User:Cburnett original work, colorization by en:User:Kbrose, CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>, via Wikimedia Commons](/images/IP_stack_connections.svg)
 
--   To send a message to another computer on the Internet,
-    1. Construct a _packet_, made up of
+-   To send a message to another computer on the Internet, the Internet layer
+    1. Constructs a _packet_, made up of
         1. The _IP header_, containing the IP addresses of the sender and recipient.
-        1. The actual data, or payload.
-    1. The IP software in your OS sees that the destination address is outside the local network, so
-    1. It sends the packet, using the link layer, to the local network's gateway (e.g. your DSL router).
+        1. The actual data, or _payload_.
+    1. Sees that the destination address is outside the local network, so
+    1. It sends the packet, using the link layer, to a gateway (e.g. your DSL router).
     1. Your DSL router sends the packet to your ISP's server.
     1. The server uses a _routing table_ to decide which neighboring router is closest to the packet's intended destination.
     1. It uses the link layer to send it to that router (the next _hop_).
@@ -68,6 +68,38 @@ The internet consists of 4 layers which are numbered from the bottom up:
 
 ## The Transport Layer
 
+-   So, the Internet layer allows us to communicate with any computer on the Internet. Why do we need more layers, then?
+
 ### Case Study: FTP
+
+### Basic Operating System Concepts
+
+| Application |
+| ----------- |
+| OS          |
+| Hardware    |
+
+#### Processes
+
+-   A _process_ is an isolated execution environment in which the OS runs each application.
+    -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, which isolates it from the rest of the software running on the computer at the same time.
+-   The process gives the application code the illusion that it the only program running on the computer.
+-   If an application crashes, it doesn't crash the whole system.
+
+#### IPC
+
+-   Processes can communicate with each other using a number of **I**nter-**P**rocess **C**ommunication mechanisms:
+    -   Shared Memory
+    -   Pipes
+    -   TCP/IP Sockets
+-   Shared memory and pipes only allow communication between two processes running on the same machine.
+-   TCP/IP sockets allow communication between processes running on the same machine (using the _loopback_ network interface) or on different machines (using a real network interface).
+
+#### Kernel Mode vs. User Mode
+
+-   Modern processors can switch between two access modes:
+    -   **Kernel Mode**: Code running in kernel mode can access the entire (virtual) address space.
+    -   **User Mode**: Code running in user mode cannot access address ranges that are reserved for the OS.
+-   Application code always runs in _user mode_.
 
 #### FTP Demonstration
