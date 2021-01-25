@@ -74,15 +74,52 @@ The internet consists of 4 layers which are numbered from the bottom up:
 
 ### Basic Operating System Concepts
 
-| Application |
-| ----------- |
-| OS          |
-| Hardware    |
+<style>
+    thead>tr {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    /* tbody>tr:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.05);
+    } */
+    td {
+        text-align: center;
+    }
+</style>
+<table>
+    <thead>
+        <tr>
+            <th>Comm<br/>Layer</th>
+            <th>Jurisdiction</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Application</td>
+            <td>Application</td>
+        </tr>
+        <tr>
+            <td>Transport</td>
+            <td rowspan="3">OS</td>
+        </tr>
+        <tr>
+            <td>Internet</td>
+            <!-- <td>OS</td> -->
+        </tr>
+        <tr>
+            <td>Link</td>
+            <!-- <td>OS</td> -->
+        </tr>
+        <tr>
+            <!-- <td>Link</td> -->
+            <td colspan="2">Hardware</td>
+        </tr>
+    </tbody>
+</table>
 
 #### Processes
 
 -   A _process_ is an isolated execution environment in which the OS runs each application.
-    -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, which isolates it from the rest of the software running on the computer at the same time.
+    -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, isolating it from the rest of the software running on the computer at the same time.
 -   The process gives the application code the illusion that it the only program running on the computer.
 -   If an application crashes, it doesn't crash the whole system.
 
@@ -93,13 +130,14 @@ The internet consists of 4 layers which are numbered from the bottom up:
     -   Pipes
     -   TCP/IP Sockets
 -   Shared memory and pipes only allow communication between two processes running on the same machine.
--   TCP/IP sockets allow communication between processes running on the same machine (using the _loopback_ network interface) or on different machines (using a real network interface).
 
-#### Kernel Mode vs. User Mode
+#### Sockets
 
--   Modern processors can switch between two access modes:
-    -   **Kernel Mode**: Code running in kernel mode can access the entire (virtual) address space.
-    -   **User Mode**: Code running in user mode cannot access address ranges that are reserved for the OS.
--   Application code always runs in _user mode_.
+-   Sockets allow communication between processes running on the same machine (using the _loopback_ network interface) or on different machines (using a physical network interface).
+-   You can think of a socket as a physical socket (like a USB or RJ45 socket) embedded in the bubble's outer wall.
+-   To communicate using sockets,
+    1. One process acts as the _server_ and opens a socket "passively", waiting for connections on a _well-known port_ (e.g. port 21 for FTP).
+    2. Another process opens a socket "actively", specifying a target host (e.g. 127.0.0.1 for the local host) and _port_ (e.g. 21).
+    3. The transport layer establishes a TCP connection between the two processes.
 
 #### FTP Demonstration
