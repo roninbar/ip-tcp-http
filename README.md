@@ -12,16 +12,16 @@
 
 The internet consists of 4 layers which are numbered from the bottom up:
 
-| Layer # | Layer Name  | Protocols                                                                                                        | Related Concepts                                                                                                         |
-| ------- | ----------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| 4       | Application | HTTP &bull; Every application-specific protocol, e.g. email (POP3 &bull; SMTP &bull; IMAP), WhatsApp, Netflix... | Domain Names, DNS &bull; Request/Response &bull; URL &bull; HTTP Methods (GET, PUT, POST, DELETE...) &bull; HTTP Headers |
-| 3       | Transport   | TCP &bull; UDP                                                                                                   | Client/Server &bull; Connection &bull; Port &bull; Socket                                                                |
-| 2       | Internet    | IP                                                                                                               | IP Address &bull; IPv4/IPv6                                                                                              |
-| 1       | Link        | **M**edium **A**ccess **C**ontrol (WiFi &bull; Ethernet &bull; ADSL &bull; ISDN)                                 | Physical (MAC) Address, _Internet Backbone_                                                                              |
+| Layer # | Layer Name  | Protocols                                                                                                        | Related Concepts                                          |
+| ------- | ----------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| 4       | Application | HTTP &bull; Every application-specific protocol, e.g. email (POP3 &bull; SMTP &bull; IMAP), WhatsApp, Netflix... | Domain Names, DNS &bull; Request/Response &bull; URL      |
+| 3       | Transport   | TCP &bull; UDP                                                                                                   | Client/Server &bull; Connection &bull; Port &bull; Socket |
+| 2       | Internet    | IP                                                                                                               | IP Address &bull; IPv4/IPv6                               |
+| 1       | Link        | **M**edium **A**ccess **C**ontrol (WiFi &bull; Ethernet &bull; ADSL)                                             | Physical (MAC) Address                                    |
 
 ## The Link Layer
 
--   Allows direct communication between computers that are connected by a _physical medium_ (wire, radio frequency, optical cable...) to each other or to a common router.
+-   Allows direct communication between computers that are connected by a _physical medium_ (wire, radio frequency, optical fiber...) to each other or to a common router.
 -   LANs usually use _Ethernet_ cables and/or _WiFi_ to connect end devices to a central router.
 -   End devices have a 48-bit _physical, or MAC, address_.
 -   To send a message from one computer to another on the same LAN, the sender must know the recipient's physical address.
@@ -68,24 +68,24 @@ The internet consists of 4 layers which are numbered from the bottom up:
 
 ## The Transport Layer
 
--   So, the Internet layer allows us to communicate with any computer on the Internet. Why do we need more layers, then?
+So, the Internet layer allows us to communicate with any computer on the Internet. Why do we need more layers, then?
 
 ### Case Study: FTP
 
 ### Basic Operating System Concepts
 
-<style>
-    thead>tr {
-        background-color: rgba(0, 0, 0, 0.1);
-    }
-    /* tbody>tr:nth-child(even) {
-        background-color: rgba(0, 0, 0, 0.05);
-    } */
-    td {
-        text-align: center;
-    }
-</style>
 <table>
+    <style>
+        thead>tr {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        /* tbody>tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        } */
+        td {
+            text-align: center;
+        }
+    </style>
     <thead>
         <tr>
             <th>Comm<br/>Layer</th>
