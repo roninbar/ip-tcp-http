@@ -44,8 +44,6 @@ The internet consists of 4 layers which are numbered from the bottom up:
     1.  The router repeats the frame over the medium that connects it to the recipient.
     1.  The other computer extracts the payload from the frame and interprets it somehow.
 
-![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
-
 ## The Internet Layer
 
 -   Allows communications between _any two_ computers on the Internet, not just those that are directly connected to each other.
@@ -73,6 +71,11 @@ The internet consists of 4 layers which are numbered from the bottom up:
         1. The gateway uses a _routing table_ to decide which neighboring router is closest to the packet's intended destination.
         1. It uses the link layer to send it to that router (the next _hop_).
         1. Each hop brings the packet closer to its destination.
+- So, an Ethernet frame contains an IP packet, which, in turn, contains the payload.
+
+![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
+
+![Matryoshka](/images/matryoshka.jpeg)
 
 ## The Transport Layer
 
