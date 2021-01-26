@@ -17,7 +17,7 @@ The internet consists of 4 layers which are numbered from the bottom up:
 | 4       | Application | HTTP &bull; Every application-specific protocol, e.g. email (POP3 &bull; SMTP &bull; IMAP), WhatsApp, Netflix... | Domain Names, DNS &bull; Request/Response &bull; URL      |
 | 3       | Transport   | TCP &bull; UDP                                                                                                   | Client/Server &bull; Connection &bull; Port &bull; Socket |
 | 2       | Internet    | IP                                                                                                               | IP Address &bull; IPv4/IPv6                               |
-| 1       | Link        | **M**edium **A**ccess **C**ontrol (WiFi &bull; Ethernet &bull; ADSL)                                             | Physical (MAC) Address                                    |
+| 1       | Link        | WiFi &bull; Ethernet &bull; ADSL &bull; Cellular Data (LTE, 4G, 5G...)                                           | Physical (MAC) Address                                    |
 
 ## The Link Layer
 
@@ -50,6 +50,13 @@ The internet consists of 4 layers which are numbered from the bottom up:
 
 -   Allows communications between _any two_ computers on the Internet, not just those that are directly connected to each other.
 -   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols (e.g. ICMP).
+-   IP Addresses
+
+    | Version | Bits | Example                           |
+    | ------- | ---- | --------------------------------- |
+    | IPv4    | 32   | 10.83.237.32                      |
+    | IPv6    | 128  | 2a03:2880:f22d:c5:face:b00c:0:167 |
+
 -   Uses other computers on the Internet as _routers_, or _gateways_ (i.e. relays) between different networks.
 -   IP software is built into the operating systems of the end computers and of each intermediate router.
 
@@ -59,66 +66,61 @@ The internet consists of 4 layers which are numbered from the bottom up:
     1. Constructs a _packet_, made up of
         1. The _IP header_, containing the IP addresses of the sender and recipient.
         1. The actual data, or _payload_.
-    1. Sees that the destination address is outside the local network, so
-    1. It sends the packet, using the link layer, to a gateway (e.g. your DSL router).
-    1. Your DSL router sends the packet to your ISP's server.
-    1. The server uses a _routing table_ to decide which neighboring router is closest to the packet's intended destination.
-    1. It uses the link layer to send it to that router (the next _hop_).
-    1. Each hop brings the packet closer to its destination.
+    1. If the destination address belongs to the local network:
+        1. Send the packet, using the link layer, directly to the destination.
+    1. If the destination address does not belong to the local network:
+        1. Send the packet, using the link layer, to the gateway (e.g. your DSL router).
+        1. The gateway uses a _routing table_ to decide which neighboring router is closest to the packet's intended destination.
+        1. It uses the link layer to send it to that router (the next _hop_).
+        1. Each hop brings the packet closer to its destination.
 
 ## The Transport Layer
 
 So, the Internet layer allows us to communicate with any computer on the Internet. Why do we need more layers, then?
 
-### Case Study: FTP
-
-### Basic Operating System Concepts
-
 <table>
-    <style>
-        thead>tr {
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-        /* tbody>tr:nth-child(even) {
-            background-color: rgba(0, 0, 0, 0.05);
-        } */
-        td {
-            text-align: center;
-        }
-    </style>
     <thead>
         <tr>
+            <th>&nbsp;</th>
             <th>Comm<br/>Layer</th>
             <th>Jurisdiction</th>
         </tr>
     </thead>
     <tbody>
         <tr>
+            <td>&nbsp;</td>
             <td>Application</td>
             <td>Application</td>
         </tr>
         <tr>
+            <td>&nbsp;</td>
             <td>Transport</td>
             <td rowspan="3">OS</td>
         </tr>
         <tr>
+            <td>&nbsp;</td>
             <td>Internet</td>
             <!-- <td>OS</td> -->
         </tr>
         <tr>
-            <td>Link</td>
+            <td>&nbsp;</td>
+            <td rowspan="2">Link</td>
             <!-- <td>OS</td> -->
         </tr>
         <tr>
+            <td>&nbsp;</td>
             <!-- <td>Link</td> -->
             <td colspan="2">Hardware</td>
         </tr>
     </tbody>
 </table>
 
+### Basic Operating System Concepts
+
 #### Processes
 
--   A _process_ is an isolated execution environment in which the OS runs each application.
+-   Modern operating systems support _multitasking_: running more than one program at the same time.
+-   A _process_ is an isolated execution environment in which the OS runs each program.
     -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, isolating it from the rest of the software running on the computer at the same time.
 -   The process gives the application code the illusion that it the only program running on the computer.
 -   If an application crashes, it doesn't crash the whole system.
@@ -139,5 +141,7 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     1. One process acts as the _server_ and opens a socket "passively", waiting for connections on a _well-known port_ (e.g. port 21 for FTP).
     2. Another process opens a socket "actively", specifying a target host (e.g. 127.0.0.1 for the local host) and _port_ (e.g. 21).
     3. The transport layer establishes a TCP connection between the two processes.
+
+### Case Study: FTP
 
 #### FTP Demonstration
