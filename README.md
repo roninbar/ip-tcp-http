@@ -231,6 +231,8 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 -   The server puts the socket in the `LISTEN` state (this is sometimes referred to as a "passive open") and starts waiting for a client to connect.
 -   The client creates its own socket and tells it to connect to the server using the server's well-known IP address and port number.
 -   When the TCP connection is established, instead of changing the state of the socket from `LISTEN` to `ESTABLISHED`, the OS automatically creates a new socket in the `ESTABLISHED` state and binds it to all five connection parameters: the protocol (TCP), the server's own IP address, the client's IP address, the server's port and the client's port.
+-   Usually the server spawns a new process to handle communication on the connected socket.
+-   The original socket stays in the `LISTEN` state and can accept a connection from another client.
 
 ### Case Study: FTP
 
