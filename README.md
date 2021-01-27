@@ -203,6 +203,15 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 #### TCP (Transmission Control Protocol)
 
+#### Comparison of UDP and TCP
+
+|                  | UDP                | TCP                    |
+| ---------------- | ------------------ | ---------------------- |
+| **Data Model**   | Discrete datagrams | Continuous byte stream |
+| **Connection**   | Connectionless     | Connection-based       |
+| **Reliability**  | Unreliable         | Reliable               |
+| **Packet Order** | Not guaranteed     | Guaranteed             |
+| **Delivery**     | Immediate          | May be delayed         |
 
 ### Case Study: FTP
 
