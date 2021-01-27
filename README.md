@@ -142,7 +142,7 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     -   Peer-to-peer (P2P):
         ```mermaid
         graph LR;
-        P1[Peer] <--> P2[Peer]
+        P1[Peer] --- P2[Peer]
         ```
     -   One server concurrently serving multiple clients:
         ```mermaid
@@ -193,12 +193,16 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 #### Sockets
 
--   Sockets allow communication between processes running on the same machine (using the _loopback_ network interface) or on different machines (using a physical network interface).
--   You can think of a socket as a physical socket (like a USB or RJ45 socket) embedded in the bubble's outer wall.
--   To communicate using sockets,
-    1. One process acts as the _server_ and opens a socket "passively", waiting for connections on a _well-known port_ (e.g. port 21 for FTP).
-    2. Another process opens a socket "actively", specifying a target host (e.g. 127.0.0.1 for the local host) and _port_ (e.g. 21).
-    3. The transport layer establishes a TCP connection between the two processes.
+-   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite. In other words, sockets are an _application programming interface_ (API) between application code and the bottom three layers of the IP stack.
+
+#### UDP (User Datagram Protocol)
+
+-   UDP is a very simple protocol that mainly adds the two port numbers (sender and recipient) to the underlying IP packet and not much else.
+-   UDP is a _datagram-oriented_, _connectionless_, _unreliable_ protocol.
+-   UDP is useful for real-time applications like online voice and video conversations and multiplayer games.
+
+#### TCP (Transmission Control Protocol)
+
 
 ### Case Study: FTP
 
