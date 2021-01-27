@@ -10,7 +10,7 @@
 
 ## Overview
 
-The internet consists of 4 layers which are numbered from the bottom up:
+The Internet consists of 4 layers which are numbered from the bottom up:
 
 | Layer # | Layer Name  | Protocols                                                                                                        | Related Concepts                                          |
 | ------- | ----------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
@@ -21,10 +21,14 @@ The internet consists of 4 layers which are numbered from the bottom up:
 
 ## The Link Layer
 
--   Allows direct communication between computers that are connected by a _physical medium_ (wire, radio frequency, optical fiber...) to each other or to a common router.
+-   Allows direct communication between computers that are connected by a _physical medium_ (wire, optical fiber, radio frequency, satellite link...) to each other or to a common router.
 -   LANs usually use _Ethernet_ cables and/or _WiFi_ to connect end devices to a central router.
 -   End devices have a 48-bit _physical, or MAC, address_.
 -   To send a message from one computer to another on the same LAN, the sender must know the recipient's physical address.
+
+![Pneumatic Tube Hub](/images/pneumatic-tube-hub-1900s.jpg)
+
+![Pneumatic Tube Hub](/images/pneumatic-tube-hub-1940s.jpg)
 
 ![Pneumatic Capsule](/images/Pneumatic-Tube-New-York-City-Postal-Service-Mail.jpg)
 
@@ -37,9 +41,9 @@ The internet consists of 4 layers which are numbered from the bottom up:
     1.  The recipient opens the capsule and takes the package.
 -   Similarly, to send digital information to another computer on the same LAN, the link layer
     1.  Constructs a _frame_, made up of
-        1.  The _frame header_, containing the physical addresses of the sender and the recipient.
+        1.  The _frame header_ (14 bytes), containing the physical addresses of the sender and the recipient.
         1.  The actual data, or _payload_.
-        1.  The _frame footer_.
+        1.  The _frame footer_ (4 bytes).
     1.  Transmits the frame over the physical medium (wire or radio frequency) connecting your device to the router.
     1.  The router repeats the frame over the medium that connects it to the recipient.
     1.  The other computer extracts the payload from the frame and interprets it somehow.
@@ -48,12 +52,12 @@ The internet consists of 4 layers which are numbered from the bottom up:
 
 -   Allows communications between _any two_ computers on the Internet, not just those that are directly connected to each other.
 -   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols (e.g. ICMP).
--   IP Addresses
+-   IP Addresses:   
 
-| Version | Bits | Example                           |
-| ------- | ---- | --------------------------------- |
-| IPv4    | 32   | 10.83.237.32                      |
-| IPv6    | 128  | 2a03:2880:f22d:c5:face:b00c:0:167 |
+    | Version | Bits | Example                           |
+    | ------- | ---- | --------------------------------- |
+    | IPv4    | 32   | 10.83.237.32                      |
+    | IPv6    | 128  | 2a03:2880:f22d:c5:face:b00c:0:167 |
 
 -   Uses other computers on the Internet as _routers_, or _gateways_ (i.e. relays) between different networks.
 -   IP software is built into the operating systems of the end computers and of each intermediate router.
@@ -67,9 +71,9 @@ The internet consists of 4 layers which are numbered from the bottom up:
     1. If the destination address belongs to the local network:
         1. Send the packet, using the link layer, directly to the destination.
     1. If the destination address does not belong to the local network:
-        1. Send the packet, using the link layer, to the gateway (e.g. your DSL router).
+        1. Send the packet, using the link layer, to the _gateway_ (e.g. your DSL router).
         1. The gateway uses a _routing table_ to decide which neighboring router is closest to the packet's intended destination.
-        1. It uses the link layer to send it to that router (the next _hop_).
+        1. Use the link layer to send it to that router (the next _hop_).
         1. Each hop brings the packet closer to its destination.
 - So, an Ethernet frame contains an IP packet, which, in turn, contains the payload.
 
@@ -127,6 +131,9 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, isolating it from the rest of the software running on the computer at the same time.
 -   The process gives the application code the illusion that it the only program running on the computer.
 -   If an application crashes, it doesn't crash the whole system.
+-   Incoming IP packets are received by the OS.
+-   However, most packets are meant to be handled by some specific application. For example, an HTTP response should go to the browser that requested it.
+-   If we let each running process pick the packets it wants to handle, bad things are going to happen.
 
 #### IPC
 
