@@ -191,10 +191,6 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 -   The IP address `127.0.0.1` is special: any packet sent to this address comes back as an incoming packet without actually being transmitted to the network.
 -   This allows inter-process communication between processes on the same computer using the same code as for networked communication. _Extremely useful during development!_
 
-#### Sockets
-
--   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite. In other words, sockets are an _application programming interface_ (API) between application code and the bottom three layers of the IP stack.
-
 #### UDP (User Datagram Protocol)
 
 -   UDP is a very simple protocol that mainly adds the two port numbers (sender and recipient) to the underlying IP packet and not much else.
@@ -203,15 +199,25 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 #### TCP (Transmission Control Protocol)
 
+-   Much more sophisticated than UDP.
+-   Allows application code to view the data as a continuous stream of bytes (actually two streams: one in each direction).
+-   Connection-based, like a telephone call.
+-   Used as the transport layer for HTTP.
+
 #### Comparison of UDP and TCP
 
-|                  | UDP                | TCP                    |
-| ---------------- | ------------------ | ---------------------- |
-| **Data Model**   | Discrete datagrams | Continuous byte stream |
-| **Connection**   | Connectionless     | Connection-based       |
-| **Reliability**  | Unreliable         | Reliable               |
-| **Packet Order** | Not guaranteed     | Guaranteed             |
-| **Delivery**     | Immediate          | May be delayed         |
+|                  | UDP                 | TCP                    |
+| ---------------- | ------------------- | ---------------------- |
+| **Metaphore**    | Mail correspondence | Telephone call         |
+| **Data Model**   | Discrete datagrams  | Continuous byte stream |
+| **Connection**   | Connectionless      | Connection-based       |
+| **Reliability**  | Unreliable          | Reliable               |
+| **Packet Order** | Not guaranteed      | Guaranteed             |
+| **Delivery**     | Immediate           | May be delayed         |
+
+#### Sockets
+
+-   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite. In other words, sockets are an _application programming interface_ (API) between application code and the bottom three layers of the IP stack.
 
 ### Case Study: FTP
 
