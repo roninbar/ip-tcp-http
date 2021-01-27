@@ -220,17 +220,17 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 -   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite.
 -   In other words, sockets are an _application programming interface_ (API) between application code and the bottom three layers of the IP stack.
 -   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
--   A socket can be in one of these modes:
-    -   CLOSED
-    -   LISTEN
-    -   ESTABLISHED
+-   A socket can be in one of several states, among them are
+    -   `CLOSED`
+    -   `LISTEN`
+    -   `ESTABLISHED`
 
 #### TCP Socket Life Cycle
 
 -   The server creates a socket and _binds_ it to the well-known port number.
--   The server puts the socket in _listening mode_ (this is sometimes referred to as a "passive open") and starts waiting for a client to connect.
+-   The server puts the socket in the `LISTEN` state (this is sometimes referred to as a "passive open") and starts waiting for a client to connect.
 -   The client creates its own socket and tells it to connect to the server using the server's well-known IP address and port number.
--   When the TCP connection is established, the OS automatically creates a new _connected_ socket and binds it to all five connection parameters: the protocol (TCP), the server's own IP address, the client's IP address, the server's port and the client's port.
+-   When the TCP connection is established, instead of changing the state of the socket from `LISTEN` to `ESTABLISHED`, the OS automatically creates a new socket in the `ESTABLISHED` state and binds it to all five connection parameters: the protocol (TCP), the server's own IP address, the client's IP address, the server's port and the client's port.
 
 ### Case Study: FTP
 
