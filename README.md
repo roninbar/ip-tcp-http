@@ -52,7 +52,7 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 
 -   Allows communications between _any two_ computers on the Internet, not just those that are directly connected to each other.
 -   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols (e.g. ICMP).
--   IP Addresses:   
+-   IP Addresses:
 
     | Version | Bits | Example                           |
     | ------- | ---- | --------------------------------- |
@@ -75,7 +75,7 @@ The Internet consists of 4 layers which are numbered from the bottom up:
         1. The gateway uses a _routing table_ to decide which neighboring router is closest to the packet's intended destination.
         1. Use the link layer to send it to that router (the next _hop_).
         1. Each hop brings the packet closer to its destination.
-- So, an Ethernet frame contains an IP packet, which, in turn, contains the payload.
+-   So, an Ethernet frame contains an IP packet, which, in turn, contains the payload.
 
 ![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
 
@@ -122,8 +122,6 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     </tbody>
 </table>
 
-### Basic Operating System Concepts
-
 #### Processes
 
 -   Modern operating systems support _multitasking_: running more than one program at the same time.
@@ -133,15 +131,65 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 -   If an application crashes, it doesn't crash the whole system.
 -   Incoming IP packets are received by the OS.
 -   However, most packets are meant to be handled by some specific application. For example, an HTTP response should go to the browser that requested it.
--   If we let each running process pick the packets it wants to handle, bad things are going to happen.
+-   If we let each running process pick the packets it wants to handle, bad things can happen.
 
-#### IPC
+#### Servers vs. Clients
 
--   Processes can communicate with each other using a number of **I**nter-**P**rocess **C**ommunication mechanisms:
-    -   Shared Memory
-    -   Pipes
-    -   TCP/IP Sockets
--   Shared memory and pipes only allow communication between two processes running on the same machine.
+-   To establish two-way communications between two processes, we need to start one process before the other and tell it to start listening for incoming packets from the other process.
+-   The process that starts first is called the _server_ and the other one is called the _client_.
+-   After communication is established, TCP and UDP don't impose any roles on the connected parties. In particular, either side may choose to terminate the connection.
+-   Possible ways to organize communications:
+    -   Peer-to-peer (P2P):
+        ```mermaid
+        graph LR;
+        P1[Peer] <--> P2[Peer]
+        ```
+    -   One server concurrently serving multiple clients:
+        ```mermaid
+        graph TD;
+        C1[Client #1] --> Server
+        C2[Client #2] --> Server
+        C3[Client #3] --> Server
+        ```
+    -   The same process can simultaneously act as a server for one kind of service and as a client for another kind. For example:
+        ```mermaid
+        graph LR;
+        B[Browser] --> WS[Web Server] --> DB[Database Server]
+        ```
+
+#### Ports
+
+-   A _port_ is simply a 16-bit integer (a whole number between 0 and 2<sup>16</sup> (= 65536), exclusive).
+-   The transport layer adds two port numbers to each packet.
+
+![Packet Encapsulation](/images/UDP_encapsulation.svg)
+
+-   The server listens on a _well known port number_. For example:
+
+    | Service              | Protocol | Default Port |
+    | -------------------- | -------- | ------------ |
+    | File Transfer (FTP)  | TCP      | 21, 20       |
+    | Mail (SMTP)          | TCP      | 25           |
+    | Mail (POP3)          | TCP      | 110          |
+    | Unsecured web (HTTP) | TCP      | 80           |
+    | Secure web (HTTPS)   | TCP      | 443          |
+    | MySQL                | TCP      | 3306         |
+    | MongoDB              | TCP      | 27017        |
+
+-   Port numbers below 1024 are assigned by [IANA](http://iana.org).
+-   The OS usually assigns to the client an unused _ephemeral_ (temporary) port in the range 49152-65535.
+-   The client sends the first packet to the server using the server's well-known port and the client's ephemeral port.
+-   This establishes an _association_ between the server process and the client process, defined by five parameters:
+    1.  The server's IP address
+    2.  The client's IP address
+    3.  The protocol (e.g. TCP or UDP)
+    4.  The server's port number
+    5.  The client's port number
+
+#### The Loopback Interface
+
+-   The IP address `127.0.0.1` is special: any packet sent to this address comes back as an incoming packet without actually being transmitted to the network.
+-   This allows inter-process communication between processes on the same computer using the same code as for networked communication. _Extremely useful during development!_
 
 #### Sockets
 
