@@ -54,10 +54,10 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 -   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols (e.g. ICMP).
 -   IP Addresses:
 
-    | Version | Bits | Example                           |
-    | ------- | ---- | --------------------------------- |
-    | IPv4    | 32   | 10.83.237.32                      |
-    | IPv6    | 128  | 2a03:2880:f22d:c5:face:b00c:0:167 |
+    | Version | Bits | Example                             |
+    | ------- | ---- | ----------------------------------- |
+    | IPv4    | 32   | `10.83.237.32`                      |
+    | IPv6    | 128  | `2a03:2880:f22d:c5:face:b00c:0:167` |
 
 -   Uses other computers on the Internet as _routers_, or _gateways_ (i.e. relays) between different networks.
 -   IP software is built into the operating systems of the end computers and of each intermediate router.
