@@ -244,6 +244,38 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 -   Usually the server spawns a new process to handle communication on the connected socket.
 -   The original socket stays in the `LISTEN` state and can accept a connection from another client.
 
+```mermaid
+sequenceDiagram
+participant user as User
+participant client as Browser
+participant csocket as Client Socket
+participant ssocket2 as Connected <br/> Server Socket
+participant ssocket as Server Socket
+participant server as Web Server
+Note right of ssocket: CLOSED
+server->>ssocket: bind(*:80)
+server->>ssocket: listen()
+Note right of ssocket: LISTEN
+server->>+ssocket: accept()
+Note left of csocket: CLOSED
+user->>client: (Search Google for "tcp socket")
+client->>+csocket: connect(www.google.com:80)
+csocket->>csocket: bind(10.0.0.5:44444)
+Note right of csocket: TCP Handshake
+csocket->>ssocket: SYN
+ssocket->>csocket: SYN+ACK
+csocket->>ssocket: ACK
+ssocket-->>-server: Connected<br/>Socket
+Note right of ssocket2: ESTABLISHED
+server->>+ssocket2: recv()
+Note left of csocket: ESTABLISHED
+csocket-->>-client: ...
+client->>+csocket: send('GET /?q=tcp%20socket')
+csocket->>ssocket2: GET /?q=tcp%20socket
+csocket-->>-client: ...
+ssocket2-->>-server: GET /?q=tcp%20socket
+```
+
 ### Case Study: FTP
 
 #### FTP Demonstration
