@@ -88,6 +88,11 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 -   The name `localhost` can usually be used as an alias for this address.
 -   This allows inter-process communication between processes on the same computer using the same code as for networked communication. _Extremely useful during development!_
 
+### DNS
+
+-   Servers are usually referred to by a _domain name_ rather than an IP address.
+-   The Domain Name System (DNS) is a _hierarchical_, _decentralized_ directory service that translates domain names to IP addresses.
+
 ## The Transport Layer
 
 So, the Internet layer allows us to communicate with any computer on the Internet. Why do we need more layers, then?
@@ -183,6 +188,7 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
     | Service              | Protocol | Default Port |
     | -------------------- | -------- | ------------ |
+    | Domain Name (DNS)    | UDP, TCP | 53           |
     | File Transfer (FTP)  | TCP      | 21, 20       |
     | Mail (SMTP)          | TCP      | 25           |
     | Mail (POP3)          | TCP      | 110          |
@@ -230,7 +236,7 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 -   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite.
 -   In other words, sockets are an _application programming interface_ (API) between the application and the transport layer.
 -   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
--   A socket can be in one of several states, among them are
+-   A socket can be in one of several states, including:
     -   `CLOSED`
     -   `LISTEN`
     -   `ESTABLISHED`
@@ -260,7 +266,7 @@ server->>+ssocket: accept()
 Note over csocket: CLOSED
 user->>client: (Search Google for "tcp socket")
 client->>+csocket: connect(www.google.com:80)
-csocket->>csocket: bind(10.0.0.5:44444)
+csocket->>csocket: bind(<client host>:52428)
 Note over csocket,ssocket: TCP Handshake
 csocket->>ssocket: SYN
 ssocket->>csocket: SYN+ACK
@@ -270,10 +276,10 @@ ssocket-->>-server: Connected<br/>Socket
 server->>+ssocket2: recv()
 Note over csocket: ESTABLISHED
 csocket-->>-client: ...
-client->>+csocket: send('GET /?q=tcp%20socket')
-csocket->>ssocket2: GET /?q=tcp%20socket
+client->>+csocket: send("GET /?q=tcp%20socket")
+csocket->>ssocket2: "GET /?q=tcp%20socket"
 csocket-->>-client: ...
-ssocket2-->>-server: GET /?q=tcp%20socket
+ssocket2-->>-server: "GET /?q=tcp%20socket"
 ```
 
 ### Case Study: FTP
