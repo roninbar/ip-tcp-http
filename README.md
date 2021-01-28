@@ -252,23 +252,23 @@ participant csocket as Client Socket
 participant ssocket2 as Connected <br/> Server Socket
 participant ssocket as Server Socket
 participant server as Web Server
-Note right of ssocket: CLOSED
 server->>ssocket: bind(*:80)
+Note over ssocket: CLOSED
 server->>ssocket: listen()
-Note right of ssocket: LISTEN
+Note over ssocket: LISTEN
 server->>+ssocket: accept()
-Note left of csocket: CLOSED
+Note over csocket: CLOSED
 user->>client: (Search Google for "tcp socket")
 client->>+csocket: connect(www.google.com:80)
 csocket->>csocket: bind(10.0.0.5:44444)
-Note right of csocket: TCP Handshake
+Note over csocket,ssocket: TCP Handshake
 csocket->>ssocket: SYN
 ssocket->>csocket: SYN+ACK
 csocket->>ssocket: ACK
+Note over ssocket2: ESTABLISHED
 ssocket-->>-server: Connected<br/>Socket
-Note right of ssocket2: ESTABLISHED
 server->>+ssocket2: recv()
-Note left of csocket: ESTABLISHED
+Note over csocket: ESTABLISHED
 csocket-->>-client: ...
 client->>+csocket: send('GET /?q=tcp%20socket')
 csocket->>ssocket2: GET /?q=tcp%20socket
