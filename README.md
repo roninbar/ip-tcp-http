@@ -30,15 +30,15 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 
 ![Pneumatic Tube Hub](/images/pneumatic-tube-hub-1940s.jpg)
 
-![Pneumatic Capsule](/images/Pneumatic-Tube-New-York-City-Postal-Service-Mail.jpg)
+![Pneumatic Canister](/images/Pneumatic-Tube-New-York-City-Postal-Service-Mail.jpg)
 
 -   Pneumatic tube analogy: to send a package, you need to
-    1.  Put the package in a capsule.
-        1.  Write the recipient's name on one side of the capsule.
+    1.  Put the package in a canister.
+        1.  Write the recipient's name on one side of the canister.
         1.  Write the sender's name (yours) on the other side.
-    1.  Put the capsule in your end of the pneumatic tube and send it to the sorting room.
-    1.  A worker in the sorting room receives the capsule, reads who is supposed to receive it, puts it in the proper tube and sends it to that person's room.
-    1.  The recipient opens the capsule and takes the package.
+    1.  Put the canister in your end of the pneumatic tube and send it to the sorting room.
+    1.  A worker in the sorting room receives the canister, reads who is supposed to receive it, puts it in the proper tube and sends it to that person's room.
+    1.  The recipient opens the canister and takes the package.
 -   Similarly, to send digital information to another computer on the same LAN, the link layer
     1.  Constructs a _frame_, made up of
         1.  The _frame header_ (14 bytes), containing the physical addresses of the sender and the recipient.
@@ -64,22 +64,29 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 
 ![en:User:Cburnett original work, colorization by en:User:Kbrose, CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>, via Wikimedia Commons](/images/IP_stack_connections.svg)
 
--   To send a message to another computer on the Internet, the Internet layer
-    1. Constructs a _packet_, made up of
+-   To send a message to another computer on the Internet:
+    1. Construct a _packet_, made up of
         1. The _IP header_, containing the IP addresses of the sender and recipient.
         1. The actual data, or _payload_.
     1. If the destination address belongs to the local network:
+        1. Translate the IP address to a physical address using the Address Resolution Protocol (ARP).
         1. Send the packet, using the link layer, directly to the destination.
     1. If the destination address does not belong to the local network:
-        1. Send the packet, using the link layer, to the _gateway_ (e.g. your DSL router).
-        1. The gateway uses a _routing table_ to decide which neighboring router is closest to the packet's intended destination.
-        1. Use the link layer to send it to that router (the next _hop_).
+        1. Use a _routing table_ to decide which gateway on the local network is closest to the packet's intended destination.
+        1. Use the link layer to send the packet to that gateway (e.g. your DSL router).
+        1. The gateway relays the packet to the other network.
         1. Each hop brings the packet closer to its destination.
 -   So, an Ethernet frame contains an IP packet, which, in turn, contains the payload.
 
 ![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
 
 ![Matryoshka](/images/matryoshka.jpeg)
+
+#### The Loopback Interface
+
+-   The IP address `127.0.0.1` is special: any packet sent to this address comes back as an incoming packet without actually being transmitted to the network.
+-   The name `localhost` can usually be used as an alias for this address.
+-   This allows inter-process communication between processes on the same computer using the same code as for networked communication. _Extremely useful during development!_
 
 ## The Transport Layer
 
@@ -129,21 +136,26 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, isolating it from the rest of the software running on the computer at the same time.
 -   The process gives the application code the illusion that it the only program running on the computer.
 -   If an application crashes, it doesn't crash the whole system.
+
+#### Processes and IP Packets
+
 -   Incoming IP packets are received by the OS.
 -   However, most packets are meant to be handled by some specific application. For example, an HTTP response should go to the browser that requested it.
 -   If we let each running process pick the packets it wants to handle, bad things can happen.
+-   So, the OS needs a way to determine which process should get each packet.
 
 #### Servers vs. Clients
 
--   To establish two-way communications between two processes, we need to start one process before the other and tell it to start listening for incoming packets from the other process.
--   The process that starts first is called the _server_ and the other one is called the _client_.
--   After communication is established, TCP and UDP don't impose any roles on the connected parties. In particular, either side may choose to terminate the connection.
+-   To establish two-way communications between two processes, one starts first and waits for the other to connect to it.
+-   The process that starts first is considered to be the _server_ and the other one the _client_.
+-   After communication is established, the transport layer doesn't impose any roles on the connected parties. In particular, either side may choose to terminate the connection.
 -   Possible ways to organize communications:
     -   Peer-to-peer (P2P):
         ```mermaid
         graph LR;
         P1[Peer] --- P2[Peer]
         ```
+        Notable example: BitTorrent.
     -   One server concurrently serving multiple clients:
         ```mermaid
         graph TD;
@@ -160,11 +172,14 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 #### Ports
 
 -   A _port_ is simply a 16-bit integer (a whole number between 0 and 2<sup>16</sup> (= 65536), exclusive).
--   The transport layer adds two port numbers to each packet.
+-   The transport layer adds two port numbers to each packet: one for the sender and one for the receiver. (In the purple segment in this diagram.)
 
 ![Packet Encapsulation](/images/UDP_encapsulation.svg)
 
--   The server listens on a _well known port number_. For example:
+-   Processes use _sockets_ to bind to specific port numbers.
+-   Generally speaking, two sockets on the same computer cannot be bound to the same port number. Attempting to bind to an already bound port results in a fatal error, usually terminating the process.
+-   The OS uses the receiving port in the transport header to determine which socket should receive the packet.
+-   Servers listen for client connections on _well known port numbers_. For example:
 
     | Service              | Protocol | Default Port |
     | -------------------- | -------- | ------------ |
@@ -186,39 +201,34 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     4.  The server's port number
     5.  The client's port number
 
-#### The Loopback Interface
-
--   The IP address `127.0.0.1` is special: any packet sent to this address comes back as an incoming packet without actually being transmitted to the network.
--   This allows inter-process communication between processes on the same computer using the same code as for networked communication. _Extremely useful during development!_
-
 #### UDP (User Datagram Protocol)
 
 -   UDP is a very simple protocol that mainly adds the two port numbers (sender and recipient) to the underlying IP packet and not much else.
--   UDP is a _datagram-oriented_, _connectionless_, _unreliable_ protocol.
--   UDP is useful for real-time applications like online voice and video conversations and multiplayer games.
+-   UDP is useful for real-time applications like live video and audio and multiplayer games.
 
 #### TCP (Transmission Control Protocol)
 
 -   Much more sophisticated than UDP.
 -   Allows application code to view the data as a continuous stream of bytes (actually two streams: one in each direction).
 -   Connection-based, like a telephone call.
+-   Doesn't limit message size.
 -   Used as the transport layer for HTTP.
 
 #### Comparison of UDP and TCP
 
-|                  | UDP                 | TCP                    |
-| ---------------- | ------------------- | ---------------------- |
-| **Metaphore**    | Mail correspondence | Telephone call         |
-| **Data Model**   | Discrete datagrams  | Continuous byte stream |
-| **Connection**   | Connectionless      | Connection-based       |
-| **Reliability**  | Unreliable          | Reliable               |
-| **Packet Order** | Not guaranteed      | Guaranteed             |
-| **Delivery**     | Immediate           | May be delayed         |
+|                  | UDP                 | TCP                                                     |
+| ---------------- | ------------------- | ------------------------------------------------------- |
+| **Metaphore**    | Mail correspondence | Telephone call                                          |
+| **Data Model**   | Discrete datagrams  | Continuous byte stream                                  |
+| **Connection**   | Connectionless      | Connection-based                                        |
+| **Reliability**  | Unreliable          | Reliable                                                |
+| **Packet Order** | Not guaranteed      | Guaranteed to be the same order in which they were sent |
+| **Delivery**     | Immediate           | May be delayed due to retransmission                    |
 
 #### Sockets
 
 -   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite.
--   In other words, sockets are an _application programming interface_ (API) between application code and the bottom three layers of the IP stack.
+-   In other words, sockets are an _application programming interface_ (API) between the application and the transport layer.
 -   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
 -   A socket can be in one of several states, among them are
     -   `CLOSED`
