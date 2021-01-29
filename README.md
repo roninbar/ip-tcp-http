@@ -88,7 +88,7 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 -   The name `localhost` can usually be used as an alias for this address.
 -   This allows inter-process communication between processes on the same computer using the same code as for networked communication. _Extremely useful during development!_
 
-### DNS
+#### DNS
 
 -   Servers are usually referred to by a _domain name_ rather than an IP address.
 -   The Domain Name System (DNS) is a _hierarchical_, _decentralized_ directory service that translates domain names to IP addresses.
@@ -138,8 +138,9 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 -   Modern operating systems support _multitasking_: running more than one program at the same time.
 -   A _process_ is an isolated execution environment in which the OS runs each program.
-    -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, isolating it from the rest of the software running on the computer at the same time.
+    -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, isolating them from the rest of the software running on the computer at the same time.
 -   The process gives the application code the illusion that it the only program running on the computer.
+-   An application running inside a process can't accidentally damage another application by changing its memory.
 -   If an application crashes, it doesn't crash the whole system.
 -   Processes can communicate with each other using _inter-process communication_ (IPC) mechanisms, including:
     -   Shared memory
@@ -150,12 +151,12 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 -   To establish two-way communications between two processes (either on the same computer or on different computers) one has to start first and wait for the other to connect to it.
 -   The process that starts first is considered to be the _server_ and the other one the _client_.
--   After communication is established, the transport layer doesn't impose any roles on the connected parties. In particular, either side may choose to terminate the connection.
+-   After the initial connection is established, the transport layer doesn't impose any roles on the connected parties. In particular, either side may choose to terminate the connection.
 -   Possible ways to organize communications:
     -   Peer-to-peer (P2P):
         ```mermaid
         graph LR;
-        P1[Peer] --- P2[Peer]
+        P1[Process #1] --- P2[Process #2]
         ```
         Notable example: BitTorrent.
     -   One server concurrently serving multiple clients:
@@ -186,6 +187,25 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 ![Packet Encapsulation](/images/UDP_encapsulation.svg)
 
 -   Processes use _sockets_ to bind to specific port numbers.
+    ```mermaid
+    flowchart BT;
+        subgraph Server Host
+            subgraph os2[OS]
+                link2[Link Layer] --> ip2[Internet Layer] --> transport2[Transport Layer] --> socket2[Socket<br/>TCP/80]
+                socket2 --> transport2 --> ip2 --> link2
+            end
+            app2[Application Code] <--> socket2
+        end
+        wire((Physical Medium))
+        subgraph Client Host
+            app1[Application Code] <--> socket1
+            subgraph OS
+                socket1[Socket<br/>TCP/64206] --> transport1[Transport Layer] --> ip1[Internet Layer] --> link1[Link Layer]
+                link1 --> ip1 --> transport1 --> socket1
+            end
+        end
+        %% link1 <--> medium((Physical Medium)) <--> link2
+    ```
 -   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite.
 -   In other words, sockets are an _application programming interface_ (API) between the application and the transport layer.
 -   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
