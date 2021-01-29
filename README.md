@@ -141,17 +141,14 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     -   You can think of a process as a kind of "bubble" that the OS inflates around the application's code and data, isolating it from the rest of the software running on the computer at the same time.
 -   The process gives the application code the illusion that it the only program running on the computer.
 -   If an application crashes, it doesn't crash the whole system.
-
-#### Processes and IP Packets
-
--   Incoming IP packets are received by the OS.
--   However, most packets are meant to be handled by some specific application. For example, an HTTP response should go to the browser that requested it.
--   If we let each running process pick the packets it wants to handle, bad things can happen.
--   So, the OS needs a way to determine which process should get each packet.
+-   Processes can communicate with each other using _inter-process communication_ (IPC) mechanisms, including:
+    -   Shared memory
+    -   Pipes
+    -   The loopback interface (127.0.0.1)
 
 #### Servers vs. Clients
 
--   To establish two-way communications between two processes, one starts first and waits for the other to connect to it.
+-   To establish two-way communications between two processes (either on the same computer or on different computers) one has to start first and wait for the other to connect to it.
 -   The process that starts first is considered to be the _server_ and the other one the _client_.
 -   After communication is established, the transport layer doesn't impose any roles on the connected parties. In particular, either side may choose to terminate the connection.
 -   Possible ways to organize communications:
@@ -174,7 +171,14 @@ So, the Internet layer allows us to communicate with any computer on the Interne
         B[Browser] --> WS[Web Server] --> DB[Database Server]
         ```
 
-#### Ports
+#### Processes and IP Packets
+
+-   Incoming IP packets are received by the OS.
+-   However, most packets are meant to be handled by some specific application. For example, an HTTP response should go to the browser that requested it.
+-   If we let each running process pick the packets it wants to handle, bad things can happen.
+-   So, the OS needs a way to determine which process should get each packet.
+
+#### Ports and Sockets
 
 -   A _port_ is simply a 16-bit integer (a whole number between 0 and 2<sup>16</sup> (= 65536), exclusive).
 -   The transport layer adds two port numbers to each packet: one for the sender and one for the receiver. (In the purple segment in this diagram.)
@@ -182,6 +186,9 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 ![Packet Encapsulation](/images/UDP_encapsulation.svg)
 
 -   Processes use _sockets_ to bind to specific port numbers.
+-   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite.
+-   In other words, sockets are an _application programming interface_ (API) between the application and the transport layer.
+-   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
 -   Generally speaking, two sockets on the same computer cannot be bound to the same port number. Attempting to bind to an already bound port results in a fatal error, usually terminating the process.
 -   The OS uses the receiving port in the transport header to determine which socket should receive the packet.
 -   Servers listen for client connections on _well known port numbers_. For example:
@@ -233,9 +240,6 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 #### Sockets
 
--   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite.
--   In other words, sockets are an _application programming interface_ (API) between the application and the transport layer.
--   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
 -   A socket can be in one of several states, including:
     -   `CLOSED`
     -   `LISTEN`
@@ -252,36 +256,52 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 ```mermaid
 sequenceDiagram
-participant user as User
+%% participant user as User
 participant client as Browser
 participant csocket as Client Socket
 participant ssocket2 as Connected <br/> Server Socket
+participant server2 as Sub-Process
 participant ssocket as Server Socket
 participant server as Web Server
 server->>ssocket: bind(*:80)
 Note over ssocket: CLOSED
 server->>ssocket: listen()
 Note over ssocket: LISTEN
+loop
 server->>+ssocket: accept()
 Note over csocket: CLOSED
-user->>client: (Search Google for "tcp socket")
+%% user->>client: (Search Google for "tcp socket")
 client->>+csocket: connect(www.google.com:80)
 csocket->>csocket: bind(<client host>:52428)
 Note over csocket,ssocket: TCP Handshake
 csocket->>ssocket: SYN
 ssocket->>csocket: SYN+ACK
 csocket->>ssocket: ACK
-Note over ssocket2: ESTABLISHED
-ssocket-->>-server: Connected<br/>Socket
-server->>+ssocket2: recv()
 Note over csocket: ESTABLISHED
 csocket-->>-client: ...
+ssocket-->>-server: Connected<br/>Socket
+par Handle client request
+Note over ssocket2: ESTABLISHED
+loop
+server2->>+ssocket2: recv()
 client->>+csocket: send("GET /?q=tcp%20socket")
-csocket->>ssocket2: "GET /?q=tcp%20socket"
+csocket->>ssocket2: GET /?q=tcp%20socket
 csocket-->>-client: ...
-ssocket2-->>-server: "GET /?q=tcp%20socket"
+client->>+csocket: recv()
+ssocket2-->>-server2: "GET /?q=tcp%20socket"
+server2->>+ssocket2: send("200 OK...")
+ssocket2->>csocket: 200 OK <br/> <html>...</html>
+ssocket2-->>-server2: ...
+csocket-->>-client: "200 OK..."
+end
+client->>+csocket: close()
+csocket->>ssocket2: FIN
+ssocket2->>csocket: ACK
+Note over csocket: CLOSED
+ssocket2->>csocket: FIN
+csocket->>ssocket2: ACK
+Note over ssocket2: CLOSED
+csocket-->>-client: ...
+end
+end
 ```
-
-### Case Study: FTP
-
-#### FTP Demonstration
