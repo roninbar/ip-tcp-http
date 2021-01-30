@@ -1,10 +1,30 @@
 # How Does the Internet Work?
 
-# Introduction
+## Introduction
+
+-   Global decentralized network
+-   _Packet switching_ instead of _circuit switching_.
+-   A _network of networks_, made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, and **W**ide **A**rea **N**etworks.
+
+## History
 
 -   Cold War origins (ARPANET)
--   Global decentralized network
--   The Internet is made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, and **W**ide **A**rea **N**etworks.
+
+![ARPANET](/images/Arpanet_map_1973.jpg)
+
+![ARPANET](/images/Arpanet_logical_map,_march_1977.png)
+
+## Timeline
+
+| Date | Event                                        |
+| ---- | -------------------------------------------- |
+| 1958 | ARPA created by President Eisenhower         |
+| 1966 | ARPANET project initiated                    |
+| 1969 | First computers connected                    |
+| 1975 | ARPANET declared "operational"               |
+| 1983 | TCP/IP becomes standard protocol stack       |
+| 1990 | ARPANET closed                               |
+| 1994 | The Internet is opened to the general public |
 
 ![Submarine Cable Map](/images/submarinecablemap.png)
 
