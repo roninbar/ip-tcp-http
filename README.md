@@ -1,32 +1,28 @@
 # How Does the Internet Work?
 
-## Introduction
+## Timeline
 
--   Global decentralized network
--   _Packet switching_ instead of _circuit switching_.
--   A _network of networks_, made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, and **W**ide **A**rea **N**etworks.
-
-## History
-
--   Cold War origins (ARPANET)
+| Date        | Event                                        |
+| ----------- | -------------------------------------------- |
+| 1957, Oct 4 | Sputnik 1 is launched by the USSR            |
+| 1958, Feb 7 | ARPA created by President Eisenhower         |
+| 1966        | ARPANET project initiated                    |
+| 1969        | First computers connected                    |
+| 1975        | ARPANET declared "operational"               |
+| 1983        | TCP/IP becomes standard protocol stack       |
+| 1990        | ARPANET closed                               |
+| 1994        | The Internet is opened to the general public |
 
 ![ARPANET](/images/Arpanet_map_1973.jpg)
 
 ![ARPANET](/images/Arpanet_logical_map,_march_1977.png)
 
-## Timeline
+## History
 
-| Date | Event                                        |
-| ---- | -------------------------------------------- |
-| 1958 | ARPA created by President Eisenhower         |
-| 1966 | ARPANET project initiated                    |
-| 1969 | First computers connected                    |
-| 1975 | ARPANET declared "operational"               |
-| 1983 | TCP/IP becomes standard protocol stack       |
-| 1990 | ARPANET closed                               |
-| 1994 | The Internet is opened to the general public |
-
-![Submarine Cable Map](/images/submarinecablemap.png)
+-   The technology that powers the Internet today began as a project named _ARPANET_ by _ARPA_ (later _DARPA_), the Advanced Research Projects Agency of the US Defense Department.
+-   ARPANET's goal was to connect computers (mostly _minicomputers_) around the continental US in such a way that if part of the network was destroyed by a Soviet nuclear attack, the surviving computers could continue to communicate using the surviving links.
+-   _Packet switching_ instead of _circuit switching_.
+-   A _network of networks_, made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, and **W**ide **A**rea **N**etworks.
 
 ## Overview
 
@@ -40,6 +36,8 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 | 1       | Link        | WiFi &bull; Ethernet &bull; ADSL &bull; Cellular Data (LTE, 4G, 5G...)                                           | Physical (MAC) Address                                    |
 
 ## The Link Layer
+
+![Submarine Cable Map](/images/submarinecablemap.png)
 
 -   Allows direct communication between computers that are connected by a _physical medium_ (wire, optical fiber, radio frequency, satellite link...) to each other or to a common router.
 -   LANs usually use _Ethernet_ cables and/or _WiFi_ to connect end devices to a central router.
@@ -210,15 +208,21 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     ```mermaid
     flowchart BT;
         subgraph Server Host
-            subgraph os2[OS]
-                link2[Link Layer] --> ip2[Internet Layer] --> transport2[Transport Layer] --> socket2[Socket<br/>TCP/80]
-                socket2 --> transport2 --> ip2 --> link2
+            subgraph LR os2[OS]
+                link2[Link Layer] --> ip2[Internet Layer] --> transport2[Transport Layer]
+                transport2 --> ip2 --> link2
             end
-            app2[Application Code] <--> socket2
+            subgraph Server Process
+                transport2 <--> socket2[Socket<br/>TCP/80]
+                app2[Application Code] <--> socket2
+            end
         end
-        wire((Physical Medium))
-        subgraph Client Host
-            app1[Application Code] <--> socket1
+        %% wire((Physical Medium))
+        link1 <--> link2
+        subgraph RL host1[Client Host]
+            subgraph BT proc1[Client Process]
+                app1[Application Code] <--> socket1
+            end
             subgraph OS
                 socket1[Socket<br/>TCP/64206] --> transport1[Transport Layer] --> ip1[Internet Layer] --> link1[Link Layer]
                 link1 --> ip1 --> transport1 --> socket1
@@ -296,52 +300,54 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 ```mermaid
 sequenceDiagram
-%% participant user as User
-participant client as Browser
-participant csocket as Client Socket
-participant ssocket2 as Connected <br/> Server Socket
-participant server2 as Sub-Process
-participant ssocket as Server Socket
-participant server as Web Server
-server->>ssocket: bind(*:80)
-Note over ssocket: CLOSED
-server->>ssocket: listen()
-Note over ssocket: LISTEN
-loop
-server->>+ssocket: accept()
-Note over csocket: CLOSED
-%% user->>client: (Search Google for "tcp socket")
-client->>+csocket: connect(www.google.com:80)
-csocket->>csocket: bind(<client host>:52428)
-Note over csocket,ssocket: TCP Handshake
-csocket->>ssocket: SYN
-ssocket->>csocket: SYN+ACK
-csocket->>ssocket: ACK
-Note over csocket: ESTABLISHED
-csocket-->>-client: ...
-ssocket-->>-server: Connected<br/>Socket
-par Handle client request
-Note over ssocket2: ESTABLISHED
-loop
-server2->>+ssocket2: recv()
-client->>+csocket: send("GET /?q=tcp%20socket")
-csocket->>ssocket2: GET /?q=tcp%20socket
-csocket-->>-client: ...
-client->>+csocket: recv()
-ssocket2-->>-server2: "GET /?q=tcp%20socket"
-server2->>+ssocket2: send("200 OK...")
-ssocket2->>csocket: 200 OK <br/> <html>...</html>
-ssocket2-->>-server2: ...
-csocket-->>-client: "200 OK..."
-end
-client->>+csocket: close()
-csocket->>ssocket2: FIN
-ssocket2->>csocket: ACK
-Note over csocket: CLOSED
-ssocket2->>csocket: FIN
-csocket->>ssocket2: ACK
-Note over ssocket2: CLOSED
-csocket-->>-client: ...
-end
-end
+    %% participant user as User
+    participant client as Browser
+    participant csocket as Client Socket
+    participant ssocket2 as Connected <br/> Server Socket
+    participant server2 as Sub-Process
+    participant ssocket as Server Socket
+    participant server as Web Server
+
+    server->>ssocket: bind(*:80)
+    Note over ssocket: CLOSED
+    server->>ssocket: listen()
+    Note over ssocket: LISTEN
+
+    loop
+        server->>+ssocket: accept()
+        Note over csocket: CLOSED
+        %% user->>client: (Search Google for "tcp socket")
+        client->>+csocket: connect(www.google.com:80)
+        csocket->>csocket: bind(<client host>:52428)
+        Note over csocket,ssocket: TCP Handshake
+        csocket->>ssocket: SYN
+        ssocket->>csocket: SYN+ACK
+        csocket->>ssocket: ACK
+        Note over csocket: ESTABLISHED
+        csocket-->>-client: ...
+        ssocket-->>-server: Connected<br/>Socket
+        par Handle client request
+            Note over ssocket2: ESTABLISHED
+            loop
+                server2->>+ssocket2: recv()
+                client->>+csocket: send("GET /?q=tcp%20socket")
+                csocket->>ssocket2: GET /?q=tcp%20socket
+                csocket-->>-client: ...
+                client->>+csocket: recv()
+                ssocket2-->>-server2: "GET /?q=tcp%20socket"
+                server2->>+ssocket2: send("200 OK...")
+                ssocket2->>csocket: 200 OK <br/> <html>...</html>
+                ssocket2-->>-server2: ...
+                csocket-->>-client: "200 OK..."
+            end
+            client->>+csocket: close()
+            csocket->>ssocket2: FIN
+            ssocket2->>csocket: ACK
+            Note over csocket: CLOSED
+            ssocket2->>csocket: FIN
+            csocket->>ssocket2: ACK
+            Note over ssocket2: CLOSED
+            csocket-->>-client: ...
+        end
+    end
 ```
