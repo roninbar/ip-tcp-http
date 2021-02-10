@@ -30,12 +30,12 @@
 
 The Internet consists of 4 layers which are numbered from the bottom up:
 
-| Layer # | Layer Name  | Protocols                                                                                                        | Related Concepts                                          |
-| ------- | ----------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| 4       | Application | HTTP &bull; Every application-specific protocol, e.g. email (POP3 &bull; SMTP &bull; IMAP), WhatsApp, Netflix... | Domain Names, DNS &bull; Request/Response &bull; URL      |
-| 3       | Transport   | TCP &bull; UDP                                                                                                   | Client/Server &bull; Connection &bull; Port &bull; Socket |
-| 2       | Internet    | IP                                                                                                               | IP Address &bull; IPv4/IPv6                               |
-| 1       | Link        | WiFi &bull; Ethernet &bull; ADSL &bull; Cellular Data (LTE, 4G, 5G...)                                           | Physical (MAC) Address                                    |
+| Layer # | Layer Name  | Provides                                                      | Implemented By                                               | Protocols                                                                                                        | Related Concepts                                          |
+| ------- | ----------- | ------------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| 4       | Application | A specific service, e.g. the world-wide web.                  | Applications (e.g. web servers and browsers), code libraries | HTTP &bull; Every application-specific protocol, e.g. email (POP3 &bull; SMTP &bull; IMAP), WhatsApp, Netflix... | Domain Names, DNS &bull; Request/Response &bull; URL      |
+| 3       | Transport   | Process-to-process communication.                             | OS                                                           | TCP &bull; UDP                                                                                                   | Port &bull; Socket &bull; Connection &bull; Client/Server |
+| 2       | Internet    | Global host-to-host communication.                            | OS                                                           | IP                                                                                                               | IP Address &bull; IPv4/IPv6                               |
+| 1       | Link        | Host-to-host communication over a single network (LAN or WAN) | Hardware, OS                                                 | WiFi &bull; Ethernet &bull; ADSL &bull; Cellular Data (LTE, 4G, 5G...)                                           | Physical (MAC) Address                                    |
 
 ## The Link Layer
 
