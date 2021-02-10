@@ -186,12 +186,14 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 #### UDP (User Datagram Protocol)
 
 -   UDP is a very simple protocol that mainly adds the two port numbers (sender and recipient) to the underlying IP packet and not much else.
+-   UDP communication uses discrete _datagrams_ (messages) like letters in the mail.
+    -   Each datagram is delivered in one IP packet.
 -   UDP is useful for real-time applications like live video and audio and multiplayer games.
 
 #### TCP (Transmission Control Protocol)
 
 -   Much more sophisticated than UDP.
--   Allows application code to view the data as a continuous stream of bytes (actually two streams: one in each direction).
+-   Allows application code to view the data as one long _stream_, or series, of bytes (actually two streams: one in each direction).
 -   Connection-based, like a telephone call.
 -   Doesn't limit message size.
 -   Used as the transport layer for HTTP.
@@ -203,13 +205,13 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 | **Metaphore**    | Mail correspondence | Telephone call                                          |
 | **Data Model**   | Discrete datagrams  | Continuous byte stream                                  |
 | **Connection**   | Connectionless      | Connection-based                                        |
-| **Reliability**  | Unreliable          | Reliable                                                |
+| **Reliability**  | Unreliable (no ACK) | Reliable (requires ACK)                                 |
 | **Packet Order** | Not guaranteed      | Guaranteed to be the same order in which they were sent |
 | **Delivery**     | Immediate           | May be delayed due to retransmission                    |
 
-#### Sockets
+#### TCP Sockets
 
--   A socket can be in one of several states, including:
+-   A TCP socket can be in one of several states, including:
     -   `CLOSED`
     -   `LISTEN`
     -   `ESTABLISHED`
@@ -219,7 +221,7 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 -   The server creates a socket and _binds_ it to the well-known port number.
 -   The server puts the socket in the `LISTEN` state (this is sometimes referred to as a "passive open") and starts waiting for a client to connect.
 -   The client creates its own socket and tells it to connect to the server using the server's well-known IP address and port number.
--   When the TCP connection is established, instead of changing the state of the socket from `LISTEN` to `ESTABLISHED`, the OS automatically creates a new socket in the `ESTABLISHED` state and binds it to all five connection parameters: the protocol (TCP), the server's own IP address, the client's IP address, the server's port and the client's port.
+-   When the TCP connection is established, instead of changing the state of the socket from `LISTEN` to `ESTABLISHED`, the OS creates _a new socket_ in the `ESTABLISHED` state and binds it to all five connection parameters: the protocol (TCP), the server's own IP address, the client's IP address, the server's port and the client's port.
 -   Usually the server spawns a new process to handle communication on the connected socket.
 -   The original socket stays in the `LISTEN` state and can accept a connection from another client.
 
