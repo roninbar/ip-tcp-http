@@ -1,27 +1,25 @@
-# How Does the Internet Work?
+# The TCP/IP Protocol Suite
 
 ## Timeline
 
-| Date        | Event                                        |
-| ----------- | -------------------------------------------- |
-| 1957, Oct 4 | Sputnik 1 is launched by the USSR            |
-| 1958, Feb 7 | ARPA created by President Eisenhower         |
-| 1966        | ARPANET project initiated                    |
-| 1969        | First computers connected                    |
-| 1975        | ARPANET declared "operational"               |
-| 1983        | TCP/IP becomes standard protocol stack       |
-| 1990        | ARPANET closed                               |
-| 1994        | The Internet is opened to the general public |
+| Date        | Event                                             | Comments                                                                                               |
+| ----------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 1957, Oct 4 | Sputnik 1 is launched by the USSR.                |                                                                                                        |
+| 1958, Feb 7 | ARPA is created by President Eisenhower.          | **A**dvanced **R**esearch **P**rojects **A**gency, today known as _DARPA_                              |
+| 1966        | ARPANET project is initiated.                     | Distributed, packet switching, wide area network. Background: a WAN that can survive a nuclear attack. |
+| 1969        | First computers connected.                        | UCLA, SRI (Stanford), UCSB, U of U                                                                     |
+| 1975        | ARPANET is declared "operational".                |                                                                                                        |
+| 1983        | TCP/IP becomes the standard protocol stack.       |                                                                                                        |
+| 1983-1989   | Other WANs are connected to ARPANET using TCP/IP. |                                                                                                        |
+| 1990        | ARPANET is decomissioned.                         |                                                                                                        |
+| 1994        | The Internet is opened to the general public.     |                                                                                                        |
 
 ![ARPANET](/images/Arpanet_map_1973.jpg)
 
 ![ARPANET](/images/Arpanet_logical_map,_march_1977.png)
 
-## History
+![TCP/IP Internet Map](/images/InetCirca85.jpg)
 
--   The technology that powers the Internet today began as a project named _ARPANET_ by _ARPA_ (later _DARPA_), the Advanced Research Projects Agency of the US Defense Department.
--   ARPANET's goal was to connect computers (mostly _minicomputers_) around the continental US in such a way that if part of the network was destroyed by a Soviet nuclear attack, the surviving computers could continue to communicate using the surviving links.
--   _Packet switching_ instead of _circuit switching_.
 -   A _network of networks_, made up of many **L**ocal **A**rea **N**etworks, like the ones in your home or office building, and **W**ide **A**rea **N**etworks.
 
 ## Overview
@@ -69,7 +67,7 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 ## The Internet Layer
 
 -   Allows communications between _any two_ computers on the Internet, not just those that are directly connected to each other.
--   Consists of one main protocol, the _Internet Protocol_ (IP) and several auxilliary protocols (e.g. ICMP).
+-   Consists of one main protocol, the _Internet Protocol_ (IP).
 -   IP Addresses:
 
     | Version | Bits | Example                             |
@@ -87,13 +85,13 @@ The Internet consists of 4 layers which are numbered from the bottom up:
         1. The _IP header_, containing the IP addresses of the sender and recipient.
         1. The actual data, or _payload_.
     1. If the destination address belongs to the local network:
-        1. Translate the IP address to a physical address using the Address Resolution Protocol (ARP).
         1. Send the packet, using the link layer, directly to the destination.
     1. If the destination address does not belong to the local network:
         1. Use a _routing table_ to decide which gateway on the local network is closest to the packet's intended destination.
         1. Use the link layer to send the packet to that gateway (e.g. your DSL router).
         1. The gateway relays the packet to the other network.
-        1. Each hop brings the packet closer to its destination.
+    1. Repeat steps 2-3 until the packet reaches its destination.
+    1. At the destination, extract the payload from the packet.
 -   So, an Ethernet frame contains an IP packet, which, in turn, contains the payload.
 
 ![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
@@ -113,44 +111,9 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 
 ## The Transport Layer
 
-So, the Internet layer allows us to communicate with any computer on the Internet. Why do we need more layers, then?
+**Question:** So, the Internet layer allows us to communicate with any computer on the Internet. Why do we need more layers, then?
 
-<table>
-    <thead>
-        <tr>
-            <th>&nbsp;</th>
-            <th>Comm<br/>Layer</th>
-            <th>Implemented by</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>&nbsp;</td>
-            <td>Application</td>
-            <td>Application</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>Transport</td>
-            <td rowspan="3">OS</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>Internet</td>
-            <!-- <td>OS</td> -->
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td rowspan="2">Link</td>
-            <!-- <td>OS</td> -->
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <!-- <td>Link</td> -->
-            <td colspan="2">Hardware</td>
-        </tr>
-    </tbody>
-</table>
+**Answer:** The Internet Layer provides _host-to-host_ communication, but we need _process-to-process_ communication.
 
 #### Processes
 
@@ -160,35 +123,6 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 -   The process gives the application code the illusion that it the only program running on the computer.
 -   An application running inside a process can't accidentally damage another application by changing its memory.
 -   If an application crashes, it doesn't crash the whole system.
--   Processes can communicate with each other using _inter-process communication_ (IPC) mechanisms, including:
-    -   Shared memory
-    -   Pipes
-    -   The loopback interface (127.0.0.1)
-
-#### Servers vs. Clients
-
--   To establish two-way communications between two processes (either on the same computer or on different computers) one has to start first and wait for the other to connect to it.
--   The process that starts first is considered to be the _server_ and the other one the _client_.
--   After the initial connection is established, the transport layer doesn't impose any roles on the connected parties. In particular, either side may choose to terminate the connection.
--   Possible ways to organize communications:
-    -   Peer-to-peer (P2P):
-        ```mermaid
-        graph LR;
-        P1[Process #1] --- P2[Process #2]
-        ```
-        Notable example: BitTorrent.
-    -   One server concurrently serving multiple clients:
-        ```mermaid
-        graph TD;
-        C1[Client #1] --> Server
-        C2[Client #2] --> Server
-        C3[Client #3] --> Server
-        ```
-    -   The same process can simultaneously act as a server for one kind of service and as a client for another kind. For example:
-        ```mermaid
-        graph LR;
-        B[Browser] --> WS[Web Server] --> DB[Database Server]
-        ```
 
 #### Processes and IP Packets
 
@@ -199,12 +133,13 @@ So, the Internet layer allows us to communicate with any computer on the Interne
 
 #### Ports and Sockets
 
--   A _port_ is simply a 16-bit integer (a whole number between 0 and 2<sup>16</sup> (= 65536), exclusive).
--   The transport layer adds two port numbers to each packet: one for the sender and one for the receiver. (In the purple segment in this diagram.)
+-   A _port_ is simply a 16-bit integer (a whole number between 0 and 2<sup>16</sup> = 65536, exclusive).
+-   The transport layer adds two port numbers to each packet: one for the sender and one for the receiver (in the purple segment in this diagram).
 
 ![Packet Encapsulation](/images/UDP_encapsulation.svg)
 
--   Processes use _sockets_ to bind to specific port numbers.
+-   Processes use _sockets_ to receive packets with specific port numbers.
+-   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
     ```mermaid
     flowchart BT;
         subgraph Server Host
@@ -230,12 +165,10 @@ So, the Internet layer allows us to communicate with any computer on the Interne
         end
         %% link1 <--> medium((Physical Medium)) <--> link2
     ```
--   _Sockets_ (originally called _"Berkley sockets"_) are OS objects that can be used by application code to communicate with local (via loopback) or remote processes using the Internet Protocol suite.
--   In other words, sockets are an _application programming interface_ (API) between the application and the transport layer.
--   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
 -   Generally speaking, two sockets on the same computer cannot be bound to the same port number. Attempting to bind to an already bound port results in a fatal error, usually terminating the process.
 -   The OS uses the receiving port in the transport header to determine which socket should receive the packet.
--   Servers listen for client connections on _well known port numbers_. For example:
+-   The client asks the OS to assign to its socket an _ephemeral_ (temporary) port in the range 49152-65535.
+-   The server binds to a _well-known_ port number. For example:
 
     | Service              | Protocol | Default Port |
     | -------------------- | -------- | ------------ |
@@ -249,14 +182,6 @@ So, the Internet layer allows us to communicate with any computer on the Interne
     | MongoDB              | TCP      | 27017        |
 
 -   Port numbers below 1024 are assigned by [IANA](http://iana.org).
--   The OS usually assigns to the client an unused _ephemeral_ (temporary) port in the range 49152-65535.
--   The client sends the first packet to the server using the server's well-known port and the client's ephemeral port.
--   This establishes an _association_ between the server process and the client process, defined by five parameters:
-    1.  The server's IP address
-    2.  The client's IP address
-    3.  The protocol (e.g. TCP or UDP)
-    4.  The server's port number
-    5.  The client's port number
 
 #### UDP (User Datagram Protocol)
 
