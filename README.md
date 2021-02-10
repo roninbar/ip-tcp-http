@@ -14,7 +14,11 @@
 | 1990        | ARPANET is decomissioned.                         |                                                                                                        |
 | 1994        | The Internet is opened to the general public.     |                                                                                                        |
 
+![PDP-10](/images/DECSystem10-KI10.jpg)
+
 ![ARPANET](/images/Arpanet_map_1973.jpg)
+
+![PDP-11](/images/Pdp-11-40.jpg)
 
 ![ARPANET](/images/Arpanet_logical_map,_march_1977.png)
 
