@@ -11,7 +11,7 @@
 | 1975        | ARPANET is declared "operational".                |                                                                                                        |
 | 1983        | TCP/IP becomes the standard protocol stack.       |                                                                                                        |
 | 1983-1989   | Other WANs are connected to ARPANET using TCP/IP. |                                                                                                        |
-| 1990        | ARPANET is decomissioned.                         |                                                                                                        |
+| 1990        | ARPANET is decommissioned.                         |                                                                                                        |
 | 1994        | The Internet is opened to the general public.     |                                                                                                        |
 
 ![PDP-10](/images/DECSystem10-KI10.jpg)
@@ -40,6 +40,8 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 ## The Link Layer
 
 ![Submarine Cable Map](/images/submarinecablemap.png)
+
+[submarinecablemap.com](https://submarinecablemap.com)
 
 -   Allows direct communication between computers that are connected by a _physical medium_ (wire, optical fiber, radio frequency, satellite link...) to each other or to a common router.
 -   LANs usually use _Ethernet_ cables and/or _WiFi_ to connect end devices to a central router.
@@ -81,13 +83,13 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 
 -   Uses other computers on the Internet as _routers_, or _gateways_ (i.e. relays) between different networks.
 -   IP software is built into the operating systems of the end computers and of each intermediate router.
-
-![en:User:Cburnett original work, colorization by en:User:Kbrose, CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>, via Wikimedia Commons](/images/IP_stack_connections.svg)
-
 -   To send a message to another computer on the Internet:
     1. Construct a _packet_, made up of
         1. The _IP header_, containing the IP addresses of the sender and recipient.
         1. The actual data, or _payload_.
+
+    ![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
+
     1. If the destination address belongs to the local network:
         1. Send the packet, using the link layer, directly to the destination.
     1. If the destination address does not belong to the local network:
@@ -98,7 +100,7 @@ The Internet consists of 4 layers which are numbered from the bottom up:
     1. At the destination, extract the payload from the packet.
 -   So, an Ethernet frame contains an IP packet, which, in turn, contains the payload.
 
-![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
+![en:User:Cburnett original work, colorization by en:User:Kbrose, CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>, via Wikimedia Commons](/images/IP_stack_connections.svg)
 
 ![Matryoshka](/images/matryoshka.jpeg)
 
@@ -210,8 +212,8 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 | **Data Model**   | Discrete datagrams  | Continuous byte stream                                  |
 | **Connection**   | Connectionless      | Connection-based                                        |
 | **Reliability**  | Unreliable (no ACK) | Reliable (requires ACK)                                 |
-| **Packet Order** | Not guaranteed      | Guaranteed to be the same order in which they were sent |
 | **Delivery**     | Immediate           | May be delayed due to retransmission                    |
+| **Packet Order** | Not guaranteed      | Guaranteed to be the same order in which they were sent |
 
 #### TCP Sockets
 
