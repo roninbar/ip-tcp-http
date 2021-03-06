@@ -89,7 +89,7 @@ The Internet consists of 4 layers which are numbered from the bottom up:
         1. The _IP header_, containing the IP addresses of the sender and recipient.
         1. The actual data, or _payload_.
 
-    ![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/UDP_encapsulation.svg)
+    ![By en:User:Cburnett original work, colorization by en:User:Kbrose - Original artwork by en:User:Cburnett, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=1546338](/images/TCP_encapsulation.svg)
 
     1. If the destination address belongs to the local network:
         1. Send the packet, using the link layer, directly to the destination.
@@ -144,7 +144,7 @@ The Internet consists of 4 layers which are numbered from the bottom up:
 -   A _port_ is simply a 16-bit integer (a whole number between 0 and 2<sup>16</sup> = 65536, exclusive).
 -   The transport layer adds two port numbers to each packet: one for the sender and one for the receiver (in the purple segment in this diagram).
 
-![Packet Encapsulation](/images/UDP_encapsulation.svg)
+![Packet Encapsulation](/images/TCP_encapsulation.svg)
 
 -   Processes use _sockets_ to receive packets with specific port numbers.
 -   You can think of a socket as a physical socket in the wall of the bubble that represents the process.
